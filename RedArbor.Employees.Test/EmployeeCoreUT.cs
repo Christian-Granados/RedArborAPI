@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace RedArbor.Employees.Test
@@ -14,6 +15,12 @@ namespace RedArbor.Employees.Test
         Mock<DAL.Interfaces.IEmployeeDAL> mockEmployeeDAL;
         readonly IMapper mapper = new MapperConfiguration(mapperConfig => { mapperConfig.AddProfile(new Maps.EmployeesMapping()); }).CreateMapper();
         Core.EmployeeCore processTested;
+
+        private static readonly object[] _sourceListEmployeeTest ={  new List<Core.Models.Employee>
+            {
+               ProcessEmployeeTest
+            }
+        };
 
         private static readonly List<DAL.Entities.Employee> DALEmployeeListTest = new()
         {
@@ -56,6 +63,8 @@ namespace RedArbor.Employees.Test
             UpdatedOn = DateTime.Parse("2000-01-01 00:00:00"),
             Username = "test1"
         };
+
+        private static readonly object[] _sourceIdTest = { ProcessEmployeeTest };
 
         [TestCaseSource("_sourceListEmployeeTest")]
         public void GetAll_ReturnsExpectedResult(List<Core.Models.Employee> expectedResult)
